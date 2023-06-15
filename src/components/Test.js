@@ -1,45 +1,42 @@
 import React from 'react';
 import createReactClass from 'create-react-class';
-import { Col, Row, Breadcrumb, Tabs, Tab } from 'react-bootstrap';
-import ManageAccount from './ManageAccount';
-import ExistingAccounts from './ExistingAccounts';
+import DownIcon from '../assets/down.png';
 
-var Home = createReactClass({
+var Collapse = createReactClass({
   getInitialState: function() {
     return {
-      tabName: 'manage-account'
+      expand: true
     };
+  },
+
+  toggleExpand: function() {
+    this.setState({expand: !this.state.expand});
   },
 
   render: function() {
     return (
-      <Row>
-        <Col xs={1}>
-          {/* <div style={{borderRight: '1px solid grey'}}>
-            <NavBar />
-          </div> */}
-        </Col>
-        <Col xs={10}>
-          <div style={{marginTop: '20px'}}>
-            <Breadcrumb>
-              <Breadcrumb.Item href="/">Home</Breadcrumb.Item>
-              <Breadcrumb.Item>Manage Accounts</Breadcrumb.Item>
-            </Breadcrumb>
-          </div>
-          <h2 style={{marginBottom: '40px'}}>Manage Account</h2>
-          <Tabs defaultActiveKey={this.state.tabName}>
-            <Tab eventKey={'manage-account'} title={'Create a new account'}>
-              <ManageAccount />
-            </Tab>
-            <Tab eventKey={'existing-accounts'} title={'Existing accounts'}>
-              <ExistingAccounts />
-            </Tab>
-          </Tabs>
-        </Col>
-        <Col xs={1}></Col>
-      </Row>
+      <div>
+        <h4 onClick={this.toggleExpand} style={{cursor: 'pointer'}}>
+          <img
+            style={{
+              transition: '0.2s',
+              transform: `rotate(${ !this.state.expand ? '180deg' : '0deg' })`
+            }}
+            src={DownIcon} width={15}
+          /> {this.props.title}
+        </h4>
+        <div
+          style={{
+            overflow: 'hidden',
+            transition: '0.2s',
+            height: this.state.expand ? 'auto' : '0px'
+          }}
+        >
+          {this.props.children}
+        </div>
+      </div>
     );
   }
 });
 
-export default Home;
+export default Collapse;

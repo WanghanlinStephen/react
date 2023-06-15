@@ -9,10 +9,10 @@ export default function Home() {
   const [tabName, setTabName] = useState('manage-account');
   return (
     <Row>
-      <Col xs={2}>
-        <div style={{borderRight: '1px solid grey'}}>
+      <Col xs={1}>
+        {/* <div style={{borderRight: '1px solid grey'}}>
           <NavBar />
-        </div>
+        </div> */}
       </Col>
       <Col xs={10}>
         <div style={{marginTop: '20px'}}>
@@ -31,6 +31,7 @@ export default function Home() {
           </Tab>
         </Tabs>
       </Col>
+      <Col xs={1}></Col>
     </Row>
   )
 }
