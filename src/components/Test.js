@@ -1,86 +1,130 @@
 import React from 'react';
 import createReactClass from 'create-react-class';
-import {Panel, Button, InputGroup, FormControl, DropdownButton, MenuItem, Pagination} from "react-bootstrap";
-import SearchIcon from '../assets/search.png';
-import AccountTable from "./AccountTable";
+import { Button, Panel, DropdownButton, MenuItem, FormControl } from 'react-bootstrap';
 
-var ExistingAccounts = createReactClass({
-  getInitialState: function() {
-    return {
-      query: ''
-    };
-  },
+var ManageAccount = createReactClass({
+    getInitialState: function () {
+        return {
+            accountTypes: ['type1', 'type2', 'type3'],
+            accountNames: ['name1', 'name2', 'name3'],
+            odinMaterialSet: '',
+            posixGroups: ['group1', 'group2', 'group3'],
+        };
+    },
 
-  handleSearch: function() {
-    console.log(this.state.query);
-  },
+    handleOdinMaterialSetChange: function (e) {
+        this.setState({ odinMaterialSet: e.target.value });
+    },
 
-  handleKeyPress: function(e) {
-    if (e.key === 'Enter') {
-      this.handleSearch();
-    }
-  },
+    render: function () {
+        return (
+            <div style={{ marginTop: '20px' }}>
+                <Panel>
+                    <Panel.Heading>
+                        <h4>Create a new account</h4>
+                    </Panel.Heading>
+                    <Panel.Body>
+                        <div>
+                            <h5 style={{ fontWeight: 'bold', marginBottom: '0px' }}>
+                                Account Type
+                                <small>
+                                    <Button href={'http://xx.com'} bsStyle={'link'}>
+                                        Info
+                                    </Button>
+                                </small>
+                            </h5>
+                            <p style={{ color: 'grey', marginTop: '0px' }}>
+                                Account type, basic auth or IAM user (SigV4).
+                            </p>
+                            <DropdownButton bsSize={''} title={'Choose an account type'}>
+                                {this.state.accountTypes.map((type) => {
+                                    return (
+                                        <MenuItem eventKey={type} key={type}>
+                                            {type}
+                                        </MenuItem>
+                                    );
+                                })}
+                            </DropdownButton>
+                        </div>
 
-  handleQueryChange: function(e) {
-    this.setState({query: e.target.value});
-  },
+                        <div>
+                            <h5 style={{ fontWeight: 'bold', marginBottom: '0px' }}>
+                                Account name
+                                <small>
+                                    <Button href={'http://xx.com'} bsStyle={'link'}>
+                                        Info
+                                    </Button>
+                                </small>
+                            </h5>
+                            <p style={{ color: 'grey', marginTop: '0px' }}>
+                                Your account will act as a member of this POSIX group for the
+                                purposes of our authorization checks. If the Read-only flag is
+                                disabled, this account will be able to repurpose or swap hosts
+                                under hostclasses that this group is listed as an Operator of.
+                            </p>
+                            <DropdownButton
+                                bsSize={''}
+                                title={this.state.accountNames[0] || ''}
+                            >
+                                {this.state.accountNames.map((name) => {
+                                    return (
+                                        <MenuItem eventKey={name} key={name}>
+                                            {name}
+                                        </MenuItem>
+                                    );
+                                })}
+                            </DropdownButton>
+                        </div>
 
-  render: function() {
-    return (
-      <div style={{marginTop: '20px'}}>
-        <Panel>
-          <Panel.Heading>
-            <div style={{display: 'flex'}}>
-              <h4 style={{marginRight: 'auto'}}>
-                Existing Accounts (1/150)
-                <small>
-                  <Button bsStyle={'link'}>Info</Button>
-                </small>
-              </h4>
-              <div style={{marginRight: '15px'}}>
-                <Button>View Details</Button>
-              </div>
-              <div>
-                <Button>Delete</Button>
-              </div>
+                        <div>
+                            <h5 style={{ fontWeight: 'bold', marginBottom: '0px' }}>
+                                Odin material set info
+                                <small>
+                                    <Button href={'http://xx.com'} bsStyle={'link'}>
+                                        Info
+                                    </Button>
+                                </small>
+                            </h5>
+                            <p style={{ color: 'grey', marginTop: '0px' }}>
+                                We use the Odin material set to validate your account
+                                credentials at runtime.
+                            </p>
+                            <FormControl
+                                value={this.state.odinMaterialSet}
+                                onChange={this.handleOdinMaterialSetChange}
+                                type='text'
+                            />
+                        </div>
+
+                        <div>
+                            <h5 style={{ fontWeight: 'bold', marginBottom: '0px' }}>
+                                Posix group
+                                <small>
+                                    <Button href={'http.com'} bsStyle={'link'}>
+                                        Info
+                                    </Button>
+                                </small>
+                            </h5>
+                            <p style={{ color: 'grey', marginTop: '0px' }}>
+                                Your account will act as a member of this Posix group for the
+                                purposes of our authorization checks. If the Read-only flag is
+                                disabled, this account will be able to repurpose or swap hosts
+                                under hostclasses that this group is listed as an Operator of.
+                            </p>
+                            <DropdownButton bsSize={''} title={'Choose a posix group'}>
+                                {this.state.posixGroups.map((group) => {
+                                    return (
+                                        <MenuItem eventKey={group} key={group}>
+                                            {group}
+                                        </MenuItem>
+                                    );
+                                })}
+                            </DropdownButton>
+                        </div>
+                    </Panel.Body>
+                </Panel>
             </div>
-            <div style={{display: 'flex', alignItems: 'center'}}>
-              <InputGroup>
-                <InputGroup.Addon>
-                  <img src={SearchIcon} width={20}/>
-                </InputGroup.Addon>
-                <FormControl
-                  value={this.state.query}
-                  onKeyPress={this.handleKeyPress}
-                  onChange={this.handleQueryChange}
-                  placeholder={'Find resources'}
-                  type="text"
-                />
-              </InputGroup>
+        );
+    },
 
-              <div style={{marginLeft: '30px', marginRight: 'auto'}}>
-                <DropdownButton title={'Any filter'}>
-                  <MenuItem eventKey="Any filter">Any filter</MenuItem>
-                  <MenuItem eventKey="Any filter">Any filter</MenuItem>
-                </DropdownButton>
-                <Button>Property: Item</Button>
-              </div>
-              <Pagination>
-                <Pagination.Prev />
-                <Pagination.Item>1</Pagination.Item>
-                <Pagination.Item>2</Pagination.Item>
-                <Pagination.Item>3</Pagination.Item>
-                <Pagination.Next />
-              </Pagination>
-            </div>
-          </Panel.Heading>
-          <Panel.Body>
-            <AccountTable />
-          </Panel.Body>
-        </Panel>
-      </div>
-    );
-  }
 });
-
-export default ExistingAccounts;
