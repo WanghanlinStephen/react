@@ -1,42 +1,86 @@
 import React from 'react';
 import createReactClass from 'create-react-class';
-import DownIcon from '../assets/down.png';
+import {Panel, Button, InputGroup, FormControl, DropdownButton, MenuItem, Pagination} from "react-bootstrap";
+import SearchIcon from '../assets/search.png';
+import AccountTable from "./AccountTable";
 
-var Collapse = createReactClass({
+var ExistingAccounts = createReactClass({
   getInitialState: function() {
     return {
-      expand: true
+      query: ''
     };
   },
 
-  toggleExpand: function() {
-    this.setState({expand: !this.state.expand});
+  handleSearch: function() {
+    console.log(this.state.query);
+  },
+
+  handleKeyPress: function(e) {
+    if (e.key === 'Enter') {
+      this.handleSearch();
+    }
+  },
+
+  handleQueryChange: function(e) {
+    this.setState({query: e.target.value});
   },
 
   render: function() {
     return (
-      <div>
-        <h4 onClick={this.toggleExpand} style={{cursor: 'pointer'}}>
-          <img
-            style={{
-              transition: '0.2s',
-              transform: `rotate(${ !this.state.expand ? '180deg' : '0deg' })`
-            }}
-            src={DownIcon} width={15}
-          /> {this.props.title}
-        </h4>
-        <div
-          style={{
-            overflow: 'hidden',
-            transition: '0.2s',
-            height: this.state.expand ? 'auto' : '0px'
-          }}
-        >
-          {this.props.children}
-        </div>
+      <div style={{marginTop: '20px'}}>
+        <Panel>
+          <Panel.Heading>
+            <div style={{display: 'flex'}}>
+              <h4 style={{marginRight: 'auto'}}>
+                Existing Accounts (1/150)
+                <small>
+                  <Button bsStyle={'link'}>Info</Button>
+                </small>
+              </h4>
+              <div style={{marginRight: '15px'}}>
+                <Button>View Details</Button>
+              </div>
+              <div>
+                <Button>Delete</Button>
+              </div>
+            </div>
+            <div style={{display: 'flex', alignItems: 'center'}}>
+              <InputGroup>
+                <InputGroup.Addon>
+                  <img src={SearchIcon} width={20}/>
+                </InputGroup.Addon>
+                <FormControl
+                  value={this.state.query}
+                  onKeyPress={this.handleKeyPress}
+                  onChange={this.handleQueryChange}
+                  placeholder={'Find resources'}
+                  type="text"
+                />
+              </InputGroup>
+
+              <div style={{marginLeft: '30px', marginRight: 'auto'}}>
+                <DropdownButton title={'Any filter'}>
+                  <MenuItem eventKey="Any filter">Any filter</MenuItem>
+                  <MenuItem eventKey="Any filter">Any filter</MenuItem>
+                </DropdownButton>
+                <Button>Property: Item</Button>
+              </div>
+              <Pagination>
+                <Pagination.Prev />
+                <Pagination.Item>1</Pagination.Item>
+                <Pagination.Item>2</Pagination.Item>
+                <Pagination.Item>3</Pagination.Item>
+                <Pagination.Next />
+              </Pagination>
+            </div>
+          </Panel.Heading>
+          <Panel.Body>
+            <AccountTable />
+          </Panel.Body>
+        </Panel>
       </div>
     );
   }
 });
 
-export default Collapse;
+export default ExistingAccounts;
